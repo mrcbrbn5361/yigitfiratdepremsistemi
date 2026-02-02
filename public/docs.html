@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html class="dark" lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Dokümantasyonu - Miraç Birben Deprem Sistemi</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta name="description"
+        content="Miraç Birben Deprem API Servisi - RESTful API dokümantasyonu ve kullanım kılavuzu">
+    <meta name="theme-color" content="#2bcdee">
+    
+    <!-- Site Verification -->
+    <meta name="4c7ef9fc5eda41924cd96b913365666556ffc4d4" content="4c7ef9fc5eda41924cd96b913365666556ffc4d4" />
+
+    <!-- Vercel Analytics -->
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2bcdee",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#101f22",
+                        "card-dark": "#16262a",
+                        "border-dark": "#283639",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "mono": ["monospace"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-x-hidden">
+
+    <div class="flex flex-col min-h-screen">
+        <!-- Top Navigation -->
+        <header
+            class="sticky top-0 z-[100] flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-border-dark bg-background-light dark:bg-background-dark/95 backdrop-blur-sm px-4 sm:px-6 py-3">
+            <div class="flex items-center gap-4 sm:gap-8">
+                <div class="flex items-center gap-3 sm:gap-4 dark:text-white">
+                    <div class="size-6 sm:size-8 text-primary">
+                        <span class="material-symbols-outlined text-[24px] sm:text-[32px]">public</span>
+                    </div>
+                    <h2
+                        class="text-slate-900 dark:text-white text-base sm:text-lg font-bold leading-tight tracking-[-0.015em]">
+                        <span class="hidden md:block">Miraç Birben Deprem Sistemi</span>
+                        <span class="md:hidden">MBDS</span>
+                    </h2>
+                </div>
+            </div>
+
+            <div class="flex flex-1 justify-end gap-4 sm:gap-6 items-center">
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center gap-4 sm:gap-6">
+                    <a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary text-sm font-medium transition-colors"
+                        href="/">Ana Sayfa</a>
+                    <a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary text-sm font-medium transition-colors"
+                        href="/dashboard.html">Dashboard</a>
+                    <a class="text-primary text-sm font-bold" href="#">API</a>
+                    <a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary text-sm font-medium transition-colors"
+                        href="/#about">Hakkında</a>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn"
+                    class="md:hidden p-2 text-slate-600 dark:text-slate-300 hover:text-primary transition-colors relative z-[130]">
+                    <span class="material-symbols-outlined text-[24px]" id="menu-icon">menu</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Mobile Menu (Outside Header) -->
+        <div id="mobile-menu"
+            class="md:hidden hidden fixed top-[65px] left-0 right-0 border-t border-border-dark bg-background-dark/98 backdrop-blur-md z-[120]">
+            <nav class="flex flex-col px-4 py-4 space-y-2">
+                <a class="block px-4 py-3 text-sm font-medium text-slate-300 hover:text-primary hover:bg-card-dark rounded-lg transition-all"
+                    href="/">Ana Sayfa</a>
+                <a class="block px-4 py-3 text-sm font-medium text-slate-300 hover:text-primary hover:bg-card-dark rounded-lg transition-all"
+                    href="/dashboard.html">Dashboard</a>
+                <a class="block px-4 py-3 text-sm font-medium text-primary bg-primary/10 rounded-lg" href="#">API</a>
+                <a class="block px-4 py-3 text-sm font-medium text-slate-300 hover:text-primary hover:bg-card-dark rounded-lg transition-all"
+                    href="/#about">Hakkında</a>
+            </nav>
+        </div>
+
+        <div class="flex flex-1 w-full max-w-[1440px] mx-auto">
+            <!-- Sidebar Navigation -->
+            <aside
+                class="hidden lg:block w-64 xl:w-72 sticky top-[65px] h-[calc(100vh-65px)] overflow-y-auto border-r border-slate-200 dark:border-border-dark bg-background-light dark:bg-background-dark py-6 sm:py-8 px-4 z-[50]">
+                <div class="flex flex-col gap-6 sm:gap-8">
+                    <div class="flex flex-col gap-1">
+                        <h5
+                            class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#9db4b9] px-3 mb-2">
+                            Başlangıç</h5>
+                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary font-medium text-sm"
+                            href="#introduction">
+                            <span class="material-symbols-outlined text-primary"
+                                style="font-size: 20px;">rocket_launch</span>
+                            Giriş
+                        </a>
+                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-card-dark text-slate-600 dark:text-slate-300 font-medium text-sm transition-colors"
+                            href="#errors">
+                            <span class="material-symbols-outlined" style="font-size: 20px;">error</span>
+                            Hatalar & Limitler
+                        </a>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <h5
+                            class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#9db4b9] px-3 mb-2">
+                            API Endpoint'leri</h5>
+                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-card-dark text-slate-600 dark:text-slate-300 font-medium text-sm transition-colors"
+                            href="#live-feed">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                            /api/earthquakes-kandilli
+                        </a>
+                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-card-dark text-slate-600 dark:text-slate-300 font-medium text-sm transition-colors"
+                            href="#proxy">
+                            <span class="material-symbols-outlined" style="font-size: 18px;">sync</span>
+                            /api/kandilli-proxy
+                        </a>
+                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-card-dark text-slate-600 dark:text-slate-300 font-medium text-sm transition-colors"
+                            href="#test">
+                            <span class="material-symbols-outlined" style="font-size: 18px;">bug_report</span>
+                            /api/test-kandilli
+                        </a>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 min-w-0 px-4 sm:px-6 py-6 sm:py-8 md:px-8 lg:px-12 xl:px-16">
+                <!-- Page Header -->
+                <div class="mb-8 sm:mb-12 border-b border-slate-200 dark:border-border-dark pb-6 sm:pb-8"
+                    id="introduction">
+                    <div class="flex items-start justify-between flex-wrap gap-4">
+                        <div class="flex flex-col gap-3 max-w-2xl">
+                            <div class="flex items-center gap-3 text-primary mb-2">
+                                <span
+                                    class="px-2 py-1 rounded bg-primary/10 text-xs font-bold tracking-wide">V1.0.0</span>
+                                <span
+                                    class="px-2 py-1 rounded bg-green-500/10 text-green-400 text-xs font-bold tracking-wide flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> Operasyonel
+                                </span>
+                            </div>
+                            <h1
+                                class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900 dark:text-white">
+                                API Dokümantasyonu</h1>
+                            <p class="text-base sm:text-lg text-slate-600 dark:text-[#9db4b9] leading-relaxed">
+                                Miraç Birben Deprem Sistemi API'sine hoş geldiniz. KOERI (Kandilli Rasathanesi)
+                                verilerini kullanan REST API'miz aracılığıyla Türkiye ve çevre bölgeler için gerçek
+                                zamanlı sismik verilere erişin. API tamamen ücretsizdir ve kimlik doğrulama gerektirmez.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 sm:mt-8">
+                        <div
+                            class="flex flex-col gap-2 p-4 rounded-xl border border-slate-200 dark:border-border-dark bg-slate-50 dark:bg-card-dark/50">
+                            <div
+                                class="size-8 sm:size-10 rounded-lg bg-primary/20 flex items-center justify-center text-primary mb-1">
+                                <span class="material-symbols-outlined text-[20px] sm:text-[24px]">bolt</span>
+                            </div>
+                            <h3 class="text-sm sm:text-base font-bold dark:text-white">Gerçek Zamanlı Veri</h3>
+                            <p class="text-xs sm:text-sm text-slate-500 dark:text-[#9db4b9]">KOERI sensörlerinden
+                                doğrudan 5 dakikalık güncellemeler.</p>
+                        </div>
+                        <div
+                            class="flex flex-col gap-2 p-4 rounded-xl border border-slate-200 dark:border-border-dark bg-slate-50 dark:bg-card-dark/50">
+                            <div
+                                class="size-8 sm:size-10 rounded-lg bg-primary/20 flex items-center justify-center text-primary mb-1">
+                                <span class="material-symbols-outlined text-[20px] sm:text-[24px]">public</span>
+                            </div>
+                            <h3 class="text-sm sm:text-base font-bold dark:text-white">Ücretsiz Erişim</h3>
+                            <p class="text-xs sm:text-sm text-slate-500 dark:text-[#9db4b9]">API anahtarı gerektirmez,
+                                tamamen açık erişim.</p>
+                        </div>
+                        <div
+                            class="flex flex-col gap-2 p-4 rounded-xl border border-slate-200 dark:border-border-dark bg-slate-50 dark:bg-card-dark/50">
+                            <div
+                                class="size-8 sm:size-10 rounded-lg bg-primary/20 flex items-center justify-center text-primary mb-1">
+                                <span class="material-symbols-outlined text-[20px] sm:text-[24px]">language</span>
+                            </div>
+                            <h3 class="text-sm sm:text-base font-bold dark:text-white">CORS Aktif</h3>
+                            <p class="text-xs sm:text-sm text-slate-500 dark:text-[#9db4b9]">Tüm domainlerden erişim
+                                izni,
+                                web uygulamalarınızda kullanın.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kandilli API Endpoint -->
+                <section class="mb-12 sm:mb-16 scroll-mt-24" id="live-feed">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                        <div>
+                            <h2 class="text-xl sm:text-2xl font-bold mb-2">Kandilli Deprem Verisi</h2>
+                            <p class="text-sm sm:text-base text-slate-600 dark:text-[#9db4b9]">KOERI Kandilli verilerini
+                                formatlanmış şekilde alın.</p>
+                        </div>
+                        <span
+                            class="px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-500 font-mono text-xs sm:text-sm font-bold border border-blue-500/20 w-fit">
+                            GET /api/earthquakes-kandilli
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 sm:gap-8">
+                        <!-- Left: Parameters -->
+                        <div class="flex flex-col gap-4 sm:gap-6">
+                            <div>
+                                <h3 class="text-base sm:text-lg font-bold mb-4 text-white">Sorgu Parametreleri</h3>
+                                <div class="overflow-hidden rounded-xl border border-slate-200 dark:border-border-dark">
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full text-left text-xs sm:text-sm min-w-[400px]">
+                                            <thead
+                                                class="bg-slate-100 dark:bg-card-dark text-slate-700 dark:text-slate-300 font-medium">
+                                                <tr>
+                                                    <th
+                                                        class="px-3 sm:px-4 py-2 sm:py-3 border-b border-slate-200 dark:border-border-dark">
+                                                        Parametre</th>
+                                                    <th
+                                                        class="px-3 sm:px-4 py-2 sm:py-3 border-b border-slate-200 dark:border-border-dark">
+                                                        Tip</th>
+                                                    <th
+                                                        class="px-3 sm:px-4 py-2 sm:py-3 border-b border-slate-200 dark:border-border-dark">
+                                                        Açıklama</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody
+                                                class="divide-y divide-slate-200 dark:divide-border-dark bg-white dark:bg-background-dark">
+                                                <tr>
+                                                    <td class="px-3 sm:px-4 py-2 sm:py-3 font-mono text-primary">limit
+                                                    </td>
+                                                    <td
+                                                        class="px-3 sm:px-4 py-2 sm:py-3 text-slate-500 dark:text-[#9db4b9]">
+                                                        integer</td>
+                                                    <td
+                                                        class="px-3 sm:px-4 py-2 sm:py-3 text-slate-600 dark:text-slate-300">
+                                                        Döndürülecek sonuç sayısı. Varsayılan 10, maksimum 50.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="p-3 sm:p-4 rounded-lg bg-blue-500/10 border border-blue-500/20 flex gap-3 items-start">
+                                <span class="material-symbols-outlined text-blue-500 shrink-0 text-[20px]">info</span>
+                                <p class="text-xs sm:text-sm text-blue-200">
+                                    <span class="font-bold text-blue-400">Veri Kaynağı:</span> Veriler KOERI (Kandilli
+                                    Rasathanesi) Orhan Aydoğdu API'si üzerinden gerçek zamanlı olarak alınır.
+                                </p>
+                            </div>
+                            <div
+                                class="p-3 sm:p-4 rounded-lg bg-green-500/10 border border-green-500/20 flex gap-3 items-start">
+                                <span
+                                    class="material-symbols-outlined text-green-500 shrink-0 text-[20px]">language</span>
+                                <p class="text-xs sm:text-sm text-green-200">
+                                    <span class="font-bold text-green-400">CORS Aktif:</span> API tüm domainlerden
+                                    erişime açıktır.
+                                    Web uygulamalarınızda, mobil uygulamalarınızda veya herhangi bir platformda
+                                    kullanabilirsiniz.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Right: Code Example -->
+                        <div class="flex flex-col h-full">
+                            <h3 class="text-base sm:text-lg font-bold mb-4 text-white">Yanıt Örneği</h3>
+                            <div
+                                class="flex-1 rounded-xl border border-slate-200 dark:border-border-dark bg-[#0d1117] overflow-hidden flex flex-col shadow-2xl">
+                                <div
+                                    class="flex items-center justify-between px-3 sm:px-4 py-2 bg-[#161b22] border-b border-[#30363d]">
+                                    <div class="flex items-center gap-2">
+                                        <div class="flex gap-1.5">
+                                            <div class="w-2.5 h-2.5 rounded-full bg-red-500/50"></div>
+                                            <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/50"></div>
+                                            <div class="w-2.5 h-2.5 rounded-full bg-green-500/50"></div>
+                                        </div>
+                                        <span class="ml-2 text-xs text-slate-400 font-mono">200 OK</span>
+                                    </div>
+                                    <button
+                                        class="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors">
+                                        <span class="material-symbols-outlined text-[14px]">content_copy</span>
+                                        <span class="hidden sm:inline">Kopyala</span>
+                                    </button>
+                                </div>
+                                <div
+                                    class="p-3 sm:p-4 overflow-x-auto font-mono text-xs leading-relaxed text-slate-300">
+                                    <pre><code>{
+  <span class="text-primary">"success"</span>: <span class="text-green-400">true</span>,
+  <span class="text-primary">"count"</span>: <span class="text-blue-400">3</span>,
+  <span class="text-primary">"data"</span>: [
+    {
+      <span class="text-primary">"id"</span>: <span class="text-green-400">"ZbOjlbIJehBN0_39.1544_28.2194"</span>,
+      <span class="text-primary">"timestamp"</span>: <span class="text-green-400">"2026-01-07T11:04:32+03:00"</span>,
+      <span class="text-primary">"date"</span>: <span class="text-green-400">"2026.01.07"</span>,
+      <span class="text-primary">"time"</span>: <span class="text-green-400">"11:04:32"</span>,
+      <span class="text-primary">"location"</span>: {
+        <span class="text-primary">"latitude"</span>: <span class="text-blue-400">39.1544</span>,
+        <span class="text-primary">"longitude"</span>: <span class="text-blue-400">28.2194</span>,
+        <span class="text-primary">"depth"</span>: <span class="text-blue-400">8.8</span>
+      },
+      <span class="text-primary">"magnitude"</span>: {
+        <span class="text-primary">"primary"</span>: <span class="text-blue-400">1.4</span>
+      },
+      <span class="text-primary">"region"</span>: <span class="text-green-400">"SINANDEDE-SINDIRGI (BALIKESIR)"</span>,
+      <span class="text-primary">"source"</span>: <span class="text-green-400">"KOERI"</span>
+    }
+  ],
+  <span class="text-primary">"total"</span>: <span class="text-blue-400">50</span>,
+  <span class="text-primary">"lastUpdated"</span>: <span class="text-green-400">"07.01.2026 17:45:23"</span>,
+  <span class="text-primary">"source"</span>: <span class="text-green-400">"KOERI - Kandilli Rasathanesi"</span>
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Kandilli Proxy Endpoint -->
+                <section class="mb-12 sm:mb-16 scroll-mt-24" id="proxy">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                        <div>
+                            <h2 class="text-xl sm:text-2xl font-bold mb-2">Ham Kandilli Verisi</h2>
+                            <p class="text-sm sm:text-base text-slate-600 dark:text-[#9db4b9]">Orhan Aydoğdu API'sinden
+                                doğrudan ham veri alın.</p>
+                        </div>
+                        <span
+                            class="px-3 py-1.5 rounded-lg bg-green-500/10 text-green-500 font-mono text-xs sm:text-sm font-bold border border-green-500/20 w-fit">
+                            GET /api/kandilli-proxy
+                        </span>
+                    </div>
+                    <div
+                        class="rounded-xl border border-slate-200 dark:border-border-dark bg-slate-50 dark:bg-card-dark p-4 sm:p-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+                            <div>
+                                <h4 class="font-bold text-white mb-4">Örnek İstek</h4>
+                                <div class="bg-[#0d1117] p-3 sm:p-4 rounded-lg border border-[#30363d] overflow-x-auto">
+                                    <code
+                                        class="text-xs sm:text-sm font-mono text-slate-300 whitespace-pre">curl -X GET "https://miracbirbendepremsistemi.vercel.app/api/kandilli-proxy"</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white mb-4">Yanıt Formatı</h4>
+                                <p class="text-xs sm:text-sm text-slate-300 mb-2">Orhan Aydoğdu API'sinin orijinal
+                                    formatında veri döndürür. Son 50 depremi içerir.</p>
+                                <div
+                                    class="bg-[#0d1117] p-3 rounded-lg border border-[#30363d] text-xs font-mono text-slate-300">
+                                    <span class="text-primary">status</span>: <span
+                                        class="text-green-400">true</span><br>
+                                    <span class="text-primary">result</span>: <span
+                                        class="text-blue-400">[...earthquakes]</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Usage Examples Section -->
+                <section class="mb-12 sm:mb-16 scroll-mt-24" id="examples">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary text-[20px] sm:text-[24px]">code</span>
+                        Kullanım Örnekleri
+                    </h2>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- JavaScript/Fetch Example -->
+                        <div
+                            class="rounded-xl border border-slate-200 dark:border-border-dark bg-slate-50 dark:bg-card-dark p-4 sm:p-6">
+                            <h4 class="font-bold text-white mb-4 flex items-center gap-2">
+                                <span class="text-yellow-400">JS</span> JavaScript / Fetch API
+                            </h4>
+                            <div class="bg-[#0d1117] p-3 sm:p-4 rounded-lg border border-[#30363d] overflow-x-auto">
+                                <pre
+                                    class="text-xs sm:text-sm font-mono text-slate-300"><code><span class="text-purple-400">fetch</span>(<span class="text-green-400">'https://miracbirbendepremsistemi.vercel.app/api/earthquakes-kandilli?limit=10'</span>)
+  .<span class="text-blue-400">then</span>(response => response.<span class="text-blue-400">json</span>())
+  .<span class="text-blue-400">then</span>(data => {
+    <span class="text-purple-400">console</span>.<span class="text-blue-400">log</span>(<span class="text-green-400">'Depremler:'</span>, data.data);
+  })
+  .<span class="text-blue-400">catch</span>(error => <span class="text-purple-400">console</span>.<span class="text-red-400">error</span>(error));</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- jQuery Example -->
+                        <div
+                            class="rounded-xl border border-slate-200 dark:border-border-dark bg-slate-50 dark:bg-card-dark p-4 sm:p-6">
+                            <h4 class="font-bold text-white mb-4 flex items-center gap-2">
+                                <span class="text-blue-400">$</span> jQuery / AJAX
+                            </h4>
+                            <div class="bg-[#0d1117] p-3 sm:p-4 rounded-lg border border-[#30363d] overflow-x-auto">
+                                <pre class="text-xs sm:text-sm font-mono text-slate-300"><code>$.<span class="text-blue-400">ajax</span>({
+  <span class="text-primary">url</span>: <span class="text-green-400">'https://miracbirbendepremsistemi.vercel.app/api/earthquakes-kandilli'</span>,
+  <span class="text-primary">method</span>: <span class="text-green-400">'GET'</span>,
+  <span class="text-primary">data</span>: { <span class="text-primary">limit</span>: <span class="text-blue-400">10</span> },
+  <span class="text-primary">success</span>: <span class="text-purple-400">function</span>(data) {
+    <span class="text-purple-400">console</span>.<span class="text-blue-400">log</span>(data.data);
+  }
+});</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Python Example -->
+                        <div
+                            class="rounded-xl border border-slate-200 dark:border-border-dark bg-slate-50 dark:bg-card-dark p-4 sm:p-6">
+                            <h4 class="font-bold text-white mb-4 flex items-center gap-2">
+                                <span class="text-blue-500">🐍</span> Python / Requests
+                            </h4>
+                            <div class="bg-[#0d1117] p-3 sm:p-4 rounded-lg border border-[#30363d] overflow-x-auto">
+                                <pre class="text-xs sm:text-sm font-mono text-slate-300"><code><span class="text-purple-400">import</span> requests
+
+response = requests.<span class="text-blue-400">get</span>(
+    <span class="text-green-400">'https://miracbirbendepremsistemi.vercel.app/api/earthquakes-kandilli'</span>,
+    params={<span class="text-green-400">'limit'</span>: <span class="text-blue-400">10</span>}
+)
+data = response.<span class="text-blue-400">json</span>()
+<span class="text-purple-400">print</span>(data[<span class="text-green-400">'data'</span>])</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- cURL Example -->
+                        <div
+                            class="rounded-xl border border-slate-200 dark:border-border-dark bg-slate-50 dark:bg-card-dark p-4 sm:p-6">
+                            <h4 class="font-bold text-white mb-4 flex items-center gap-2">
+                                <span class="text-green-400">$</span> cURL / Terminal
+                            </h4>
+                            <div class="bg-[#0d1117] p-3 sm:p-4 rounded-lg border border-[#30363d] overflow-x-auto">
+                                <pre class="text-xs sm:text-sm font-mono text-slate-300"><code>curl -X GET \
+  <span class="text-green-400">"https://miracbirbendepremsistemi.vercel.app/api/earthquakes-kandilli?limit=10"</span> \
+  -H <span class="text-green-400">"Accept: application/json"</span></code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 p-4 rounded-lg bg-primary/10 border border-primary/20">
+                        <h3 class="text-lg font-bold text-primary mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[20px]">tips_and_updates</span>
+                            Önemli Notlar
+                        </h3>
+                        <ul class="text-sm text-slate-300 space-y-2 ml-6">
+                            <li class="list-disc">API tamamen ücretsizdir ve API anahtarı gerektirmez</li>
+                            <li class="list-disc">CORS tüm domainler için aktiftir - herhangi bir web sitesinden
+                                kullanabilirsiniz</li>
+                            <li class="list-disc">Rate limit: Dakikada 100, saatte 1000, günde 10.000 istek</li>
+                            <li class="list-disc">Veriler 5 dakikada bir KOERI'den güncellenir</li>
+                            <li class="list-disc">Tüm zaman damgaları Türkiye saati (UTC+3) ile verilir</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Test Endpoint -->
+                <section class="mb-12 sm:mb-16 scroll-mt-24" id="test">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                        <div>
+                            <h2 class="text-xl sm:text-2xl font-bold mb-2">API Test</h2>
+                            <p class="text-sm sm:text-base text-slate-600 dark:text-[#9db4b9]">API bağlantısını test
+                                edin.</p>
+                        </div>
+                        <span
+                            class="px-3 py-1.5 rounded-lg bg-purple-500/10 text-purple-500 font-mono text-xs sm:text-sm font-bold border border-purple-500/20 w-fit">
+                            GET /api/test-kandilli
+                        </span>
+                    </div>
+                    <div
+                        class="rounded-xl border border-slate-200 dark:border-border-dark bg-slate-50 dark:bg-card-dark p-4 sm:p-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+                            <div>
+                                <h4 class="font-bold text-white mb-4">Örnek İstek</h4>
+                                <div class="bg-[#0d1117] p-3 sm:p-4 rounded-lg border border-[#30363d] overflow-x-auto">
+                                    <code
+                                        class="text-xs sm:text-sm font-mono text-slate-300 whitespace-pre">curl -X GET "https://miracbirbendepremsistemi.vercel.app/api/test-kandilli"</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white mb-4">Yanıt Alanları</h4>
+                                <div class="flex flex-col gap-2 font-mono text-xs sm:text-sm">
+                                    <div
+                                        class="flex items-center justify-between p-2 rounded hover:bg-white/5 border border-transparent hover:border-white/10 transition-colors">
+                                        <span class="text-primary">success</span>
+                                        <span class="text-slate-500 dark:text-slate-400">API durumu</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center justify-between p-2 rounded hover:bg-white/5 border border-transparent hover:border-white/10 transition-colors">
+                                        <span class="text-primary">status</span>
+                                        <span class="text-slate-500 dark:text-slate-400">HTTP durum kodu</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center justify-between p-2 rounded hover:bg-white/5 border border-transparent hover:border-white/10 transition-colors">
+                                        <span class="text-primary">dataLength</span>
+                                        <span class="text-slate-500 dark:text-slate-400">Veri sayısı</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+
+                <!-- Errors Section -->
+                <section class="mb-16 sm:mb-24 scroll-mt-24" id="errors">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-red-400 text-[20px] sm:text-[24px]">warning</span>
+                        Hatalar & Limitler
+                    </h2>
+                    <div class="overflow-hidden rounded-xl border border-slate-200 dark:border-border-dark shadow-sm">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs sm:text-sm min-w-[500px]">
+                                <thead
+                                    class="bg-slate-100 dark:bg-card-dark text-slate-700 dark:text-slate-300 font-medium">
+                                    <tr>
+                                        <th
+                                            class="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-200 dark:border-border-dark">
+                                            Kod</th>
+                                        <th
+                                            class="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-200 dark:border-border-dark">
+                                            Açıklama</th>
+                                        <th
+                                            class="px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-200 dark:border-border-dark">
+                                            Çözüm</th>
+                                    </tr>
+                                </thead>
+                                <tbody
+                                    class="divide-y divide-slate-200 dark:divide-border-dark bg-white dark:bg-background-dark">
+                                    <tr>
+                                        <td class="px-4 sm:px-6 py-3 sm:py-4 font-mono font-bold text-red-400">429</td>
+                                        <td class="px-4 sm:px-6 py-3 sm:py-4 text-slate-600 dark:text-slate-300">Çok
+                                            Fazla İstek</td>
+                                        <td class="px-4 sm:px-6 py-3 sm:py-4 text-slate-500 dark:text-[#9db4b9]">Rate
+                                            limitinizi aştınız. Dakikada 100 istek sınırı.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 sm:px-6 py-3 sm:py-4 font-mono font-bold text-red-400">500</td>
+                                        <td class="px-4 sm:px-6 py-3 sm:py-4 text-slate-600 dark:text-slate-300">Sunucu
+                                            Hatası</td>
+                                        <td class="px-4 sm:px-6 py-3 sm:py-4 text-slate-500 dark:text-[#9db4b9]">
+                                            Sunucumuzda bir sorun oluştu. Daha sonra tekrar deneyin.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 sm:px-6 py-3 sm:py-4 font-mono font-bold text-red-400">503</td>
+                                        <td class="px-4 sm:px-6 py-3 sm:py-4 text-slate-600 dark:text-slate-300">Hizmet
+                                            Kullanılamıyor</td>
+                                        <td class="px-4 sm:px-6 py-3 sm:py-4 text-slate-500 dark:text-[#9db4b9]">
+                                            Kandilli veri kaynağına erişilemiyor. Geçici bir durum.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
+                        <h3 class="text-lg font-bold text-yellow-400 mb-2">Rate Limiting</h3>
+                        <ul class="text-sm text-yellow-200 space-y-1">
+                            <li>• Dakikada maksimum 100 istek</li>
+                            <li>• Saatte maksimum 1000 istek</li>
+                            <li>• Günde maksimum 10.000 istek</li>
+                            <li>• Aşım durumunda 429 HTTP kodu döner</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Footer -->
+                <footer class="mt-auto py-8 sm:py-12 border-t border-slate-200 dark:border-border-dark">
+                    <div
+                        class="flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6 text-xs sm:text-sm text-slate-500 dark:text-[#9db4b9]">
+                        <p>© 2026 Miraç Birben Deprem Sistemi. Tüm hakları saklıdır.</p>
+                        <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
+                            <a class="hover:text-primary transition-colors" href="/terms.html">Şartlar</a>
+                            <a class="hover:text-primary transition-colors" href="/privacy.html">Gizlilik</a>
+                            <a class="hover:text-primary transition-colors" href="/">Ana Sayfa</a>
+                        </div>
+                    </div>
+                </footer>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Vercel Analytics Tracking
+        if (window.va) {
+            window.va('track', 'page_view', { page: 'docs' });
+        }
+
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+
+            if (mobileMenuBtn && mobileMenu && menuIcon) {
+                mobileMenuBtn.addEventListener('click', function () {
+                    const isOpen = !mobileMenu.classList.contains('hidden');
+
+                    if (isOpen) {
+                        mobileMenu.classList.add('hidden');
+                        menuIcon.textContent = 'menu';
+                    } else {
+                        mobileMenu.classList.remove('hidden');
+                        menuIcon.textContent = 'close';
+                    }
+                });
+
+                // Close mobile menu when clicking on links
+                const mobileLinks = mobileMenu.querySelectorAll('a');
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', function () {
+                        mobileMenu.classList.add('hidden');
+                        menuIcon.textContent = 'menu';
+                    });
+                });
+
+                // Close mobile menu when clicking outside
+                document.addEventListener('click', function (event) {
+                    if (!mobileMenuBtn.contains(event.target) && !mobileMenu.contains(event.target)) {
+                        mobileMenu.classList.add('hidden');
+                        menuIcon.textContent = 'menu';
+                    }
+                });
+            }
+
+            // Copy button functionality
+            const copyButtons = document.querySelectorAll('button:has(.material-symbols-outlined)');
+            copyButtons.forEach(button => {
+                const icon = button.querySelector('.material-symbols-outlined');
+                if (icon && icon.textContent.trim() === 'content_copy') {
+                    button.addEventListener('click', async function () {
+                        const codeBlock = button.closest('.bg-\\[\\#0d1117\\]');
+                        if (!codeBlock) return;
+
+                        const codeElement = codeBlock.querySelector('pre code');
+                        if (!codeElement) return;
+
+                        const textToCopy = codeElement.textContent;
+
+                        try {
+                            if (navigator.clipboard && navigator.clipboard.writeText) {
+                                await navigator.clipboard.writeText(textToCopy);
+                            } else {
+                                // Fallback for older browsers
+                                const textarea = document.createElement('textarea');
+                                textarea.value = textToCopy;
+                                textarea.style.position = 'fixed';
+                                textarea.style.opacity = '0';
+                                document.body.appendChild(textarea);
+                                textarea.select();
+                                document.execCommand('copy');
+                                document.body.removeChild(textarea);
+                            }
+
+                            // Visual feedback
+                            const originalText = button.querySelector('span:not(.material-symbols-outlined)')?.textContent;
+                            const textSpan = button.querySelector('span:not(.material-symbols-outlined)');
+
+                            icon.textContent = 'check';
+                            if (textSpan) textSpan.textContent = 'Kopyalandı!';
+                            button.classList.add('text-green-400');
+
+                            setTimeout(() => {
+                                icon.textContent = 'content_copy';
+                                if (textSpan && originalText) textSpan.textContent = originalText;
+                                button.classList.remove('text-green-400');
+                            }, 2000);
+                        } catch (err) {
+                            console.error('Copy failed:', err);
+                            icon.textContent = 'error';
+                            setTimeout(() => {
+                                icon.textContent = 'content_copy';
+                            }, 2000);
+                        }
+                    });
+                }
+            });
+        });
+
+        // Track link clicks
+        document.addEventListener('click', function (e) {
+            const link = e.target.closest('a');
+            if (link) {
+                const href = link.getAttribute('href');
+                if (href && window.va) {
+                    window.va('track', 'link_clicked', {
+                        href: href,
+                        text: link.textContent.trim(),
+                        page: 'docs'
+                    });
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html class="dark" lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miraç Birben Deprem Sistemi - Gerçek Zamanlı Deprem Takibi</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta name="description"
+        content="Türkiye ve yakın çevresindeki gerçek zamanlı deprem verileri - KOERI verilerini kullanan deprem takip sistemi">
+    <meta name="theme-color" content="#2bcdee">
+    
+    <!-- Site Verification -->
+    <meta name="4c7ef9fc5eda41924cd96b913365666556ffc4d4" content="4c7ef9fc5eda41924cd96b913365666556ffc4d4" />
+
+    <!-- Vercel Analytics -->
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2bcdee",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#101f22",
+                        "card-dark": "#16262a",
+                        "border-dark": "#283639",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-[#111314] dark:text-white overflow-x-hidden min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <header
+        class="sticky top-0 z-[100] w-full border-b border-solid border-[#e5e7eb] dark:border-border-dark bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md">
+        <div class="flex items-center justify-between px-4 sm:px-6 py-4 max-w-[1280px] mx-auto w-full">
+            <div class="flex items-center gap-3 sm:gap-4">
+                <div class="flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-[28px] sm:text-[32px]">public</span>
+                </div>
+                <h1 class="text-base sm:text-lg font-bold leading-tight tracking-[-0.015em] dark:text-white">
+                    <span class="hidden sm:inline">Miraç Birben Deprem Sistemi</span>
+                    <span class="sm:hidden">MBDS</span>
+                </h1>
+            </div>
+
+            <div class="hidden lg:flex items-center justify-end gap-8">
+                <nav class="flex items-center gap-8">
+                    <a class="text-sm font-medium leading-normal hover:text-primary transition-colors dark:text-white"
+                        href="#">Ana Sayfa</a>
+                    <a class="text-sm font-medium leading-normal text-[#637588] dark:text-[#9db4b9] hover:text-primary transition-colors"
+                        href="/dashboard.html">Dashboard</a>
+                    <a class="text-sm font-medium leading-normal text-[#637588] dark:text-[#9db4b9] hover:text-primary transition-colors"
+                        href="/docs">API</a>
+                    <a class="text-sm font-medium leading-normal text-[#637588] dark:text-[#9db4b9] hover:text-primary transition-colors"
+                        href="/about.html">Hakkında</a>
+                </nav>
+            </div>
+
+            <button id="mobile-menu-btn"
+                class="lg:hidden p-2 text-white hover:text-primary transition-colors relative z-[130]">
+                <span class="material-symbols-outlined text-[24px]" id="menu-icon">menu</span>
+            </button>
+        </div>
+    </header>
+
+    <div id="mobile-menu"
+        class="lg:hidden hidden fixed top-[73px] left-0 right-0 border-t border-border-dark bg-background-dark/98 backdrop-blur-md z-[120]">
+        <nav class="flex flex-col px-4 py-4 space-y-2">
+            <a class="block px-4 py-3 text-sm font-medium text-white bg-primary/10 rounded-lg" href="#">Ana Sayfa</a>
+            <a class="block px-4 py-3 text-sm font-medium text-[#9db4b9] hover:text-primary hover:bg-card-dark rounded-lg transition-all"
+                href="/dashboard.html">Dashboard</a>
+            <a class="block px-4 py-3 text-sm font-medium text-[#9db4b9] hover:text-primary hover:bg-card-dark rounded-lg transition-all"
+                href="/docs">API</a>
+            <a class="block px-4 py-3 text-sm font-medium text-[#9db4b9] hover:text-primary hover:bg-card-dark rounded-lg transition-all"
+                href="/about.html">Hakkında</a>
+        </nav>
+    </div>
+
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <div
+            class="px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-32 flex justify-center bg-gradient-to-br from-background-dark via-[#151c1e] to-background-dark">
+            <div class="max-w-[1280px] w-full text-center">
+                <div
+                    class="inline-flex items-center gap-2 rounded-full border border-border-dark bg-card-dark px-4 py-2 mb-8">
+                    <span class="flex size-2 rounded-full bg-green-500 animate-pulse"></span>
+                    <p class="text-xs font-medium text-white">Gerçek Zamanlı Deprem Takibi</p>
+                </div>
+
+                <h1 class="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-tight">
+                    Türkiye Deprem<br>Takip Sistemi
+                </h1>
+
+                <p class="text-lg sm:text-xl text-[#9db4b9] max-w-3xl mx-auto mb-12 leading-relaxed">
+                    KOERI (Kandilli Rasathanesi) verilerini kullanan gerçek zamanlı deprem takip sistemi.
+                    Türkiye ve çevre bölgelerdeki tüm deprem aktivitelerini anında takip edin.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a href="/dashboard.html"
+                        class="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-xl hover:bg-primary/90 transition-all font-semibold text-lg shadow-lg shadow-primary/20">
+                        <span class="material-symbols-outlined text-[24px]">dashboard</span>
+                        Dashboard'a Git
+                    </a>
+                    <a href="/docs"
+                        class="inline-flex items-center gap-2 px-8 py-4 bg-card-dark border-2 border-border-dark text-white rounded-xl hover:border-primary/50 transition-all font-semibold text-lg">
+                        <span class="material-symbols-outlined text-[24px]">code</span>
+                        API Dokümantasyonu
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="px-4 sm:px-6 lg:px-8 py-16 sm:py-24 flex justify-center bg-background-dark">
+            <div class="max-w-[1280px] w-full">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Özellikler</h2>
+                    <p class="text-lg text-[#9db4b9] max-w-2xl mx-auto">
+                        Modern teknoloji ile güçlendirilmiş deprem takip sistemi
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div
+                        class="bg-card-dark border border-border-dark rounded-2xl p-8 hover:border-primary/50 transition-all">
+                        <div
+                            class="size-14 rounded-xl bg-primary/20 flex items-center justify-center text-primary mb-6">
+                            <span class="material-symbols-outlined text-[32px]">bolt</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Gerçek Zamanlı</h3>
+                        <p class="text-[#9db4b9] leading-relaxed">
+                            KOERI sensörlerinden doğrudan alınan verilerle anlık deprem takibi
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-card-dark border border-border-dark rounded-2xl p-8 hover:border-primary/50 transition-all">
+                        <div
+                            class="size-14 rounded-xl bg-primary/20 flex items-center justify-center text-primary mb-6">
+                            <span class="material-symbols-outlined text-[32px]">api</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Ücretsiz API</h3>
+                        <p class="text-[#9db4b9] leading-relaxed">
+                            Geliştiriciler için tamamen ücretsiz ve açık erişimli REST API
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-card-dark border border-border-dark rounded-2xl p-8 hover:border-primary/50 transition-all">
+                        <div
+                            class="size-14 rounded-xl bg-primary/20 flex items-center justify-center text-primary mb-6">
+                            <span class="material-symbols-outlined text-[32px]">analytics</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Detaylı İstatistikler</h3>
+                        <p class="text-[#9db4b9] leading-relaxed">
+                            Kapsamlı deprem istatistikleri ve analiz araçları
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-card-dark border border-border-dark rounded-2xl p-8 hover:border-primary/50 transition-all">
+                        <div
+                            class="size-14 rounded-xl bg-primary/20 flex items-center justify-center text-primary mb-6">
+                            <span class="material-symbols-outlined text-[32px]">devices</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Responsive</h3>
+                        <p class="text-[#9db4b9] leading-relaxed">
+                            Tüm cihazlarda mükemmel çalışan modern arayüz
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-card-dark border border-border-dark rounded-2xl p-8 hover:border-primary/50 transition-all">
+                        <div
+                            class="size-14 rounded-xl bg-primary/20 flex items-center justify-center text-primary mb-6">
+                            <span class="material-symbols-outlined text-[32px]">speed</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Hızlı</h3>
+                        <p class="text-[#9db4b9] leading-relaxed">
+                            Optimize edilmiş altyapı ile milisaniyeler içinde yanıt
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-card-dark border border-border-dark rounded-2xl p-8 hover:border-primary/50 transition-all">
+                        <div
+                            class="size-14 rounded-xl bg-primary/20 flex items-center justify-center text-primary mb-6">
+                            <span class="material-symbols-outlined text-[32px]">security</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Güvenilir</h3>
+                        <p class="text-[#9db4b9] leading-relaxed">
+                            KOERI - Boğaziçi Üniversitesi resmi verilerini kullanıyoruz
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div
+            class="px-4 sm:px-6 lg:px-8 py-16 sm:py-24 flex justify-center bg-gradient-to-br from-primary/10 to-primary/5">
+            <div class="max-w-[1280px] w-full text-center">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-6">Hemen Başlayın</h2>
+                <p class="text-lg text-[#9db4b9] max-w-2xl mx-auto mb-10">
+                    Dashboard'da canlı deprem verilerini görüntüleyin veya API'mizi kullanarak kendi uygulamanızı
+                    geliştirin
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="/dashboard.html"
+                        class="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-xl hover:bg-primary/90 transition-all font-semibold text-lg">
+                        <span class="material-symbols-outlined text-[24px]">visibility</span>
+                        Verileri Görüntüle
+                    </a>
+                    <a href="/about.html"
+                        class="inline-flex items-center gap-2 px-8 py-4 bg-card-dark border-2 border-border-dark text-white rounded-xl hover:border-primary/50 transition-all font-semibold text-lg">
+                        <span class="material-symbols-outlined text-[24px]">info</span>
+                        Hakkımızda
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-border-dark bg-background-dark py-8 sm:py-12">
+        <div class="px-4 sm:px-6 lg:px-8 max-w-[1280px] mx-auto">
+            <div
+                class="flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6 text-xs sm:text-sm text-[#9db4b9]">
+                <p>© 2026 Miraç Birben Deprem Sistemi. Tüm hakları saklıdır.</p>
+                <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
+                    <a class="hover:text-primary transition-colors" href="/terms.html">Şartlar</a>
+                    <a class="hover:text-primary transition-colors" href="/privacy.html">Gizlilik</a>
+                    <a class="hover:text-primary transition-colors" href="/about.html">Hakkında</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Vercel Analytics
+        if (window.va) {
+            window.va('track', 'page_view', { page: 'home' });
+        }
+
+        // Mobile menu
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+
+            if (mobileMenuBtn && mobileMenu && menuIcon) {
+                mobileMenuBtn.addEventListener('click', function () {
+                    const isOpen = !mobileMenu.classList.contains('hidden');
+
+                    if (isOpen) {
+                        mobileMenu.classList.add('hidden');
+                        menuIcon.textContent = 'menu';
+                    } else {
+                        mobileMenu.classList.remove('hidden');
+                        menuIcon.textContent = 'close';
+                    }
+                });
+
+                document.addEventListener('click', function (event) {
+                    if (!mobileMenuBtn.contains(event.target) && !mobileMenu.contains(event.target)) {
+                        mobileMenu.classList.add('hidden');
+                        menuIcon.textContent = 'menu';
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html class="dark" lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Miraç Birben Deprem Sistemi</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta name="description"
+        content="Gerçek zamanlı deprem verileri dashboard - KOERI verilerini kullanan deprem takip sistemi">
+    <meta name="theme-color" content="#2bcdee">
+    
+    <!-- Site Verification -->
+    <meta name="4c7ef9fc5eda41924cd96b913365666556ffc4d4" content="4c7ef9fc5eda41924cd96b913365666556ffc4d4" />
+
+    <!-- Vercel Analytics -->
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2bcdee",
+                        "primary-hover": "#22a4be",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#111718",
+                        "surface-dark": "#1c2527",
+                        "border-dark": "#283639",
+                        "border-light": "#e0e0e0",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Space Grotesk", "sans-serif"],
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-[#111314] dark:text-white overflow-x-hidden min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <header
+        class="sticky top-0 z-[100] w-full border-b border-solid border-[#e5e7eb] dark:border-border-dark bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md">
+        <div class="flex items-center justify-between px-4 sm:px-6 py-4 max-w-[1280px] mx-auto w-full">
+            <div class="flex items-center gap-3 sm:gap-4">
+                <div class="flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-[28px] sm:text-[32px]">public</span>
+                </div>
+                <h1 class="text-base sm:text-lg font-bold leading-tight tracking-[-0.015em] dark:text-white">
+                    <span class="hidden sm:inline">Miraç Birben Deprem Sistemi</span>
+                    <span class="sm:hidden">MBDS</span>
+                </h1>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden lg:flex items-center justify-end gap-8">
+                <nav class="flex items-center gap-8">
+                    <a class="text-sm font-medium leading-normal text-[#637588] dark:text-[#9db4b9] hover:text-primary transition-colors"
+                        href="/">Ana Sayfa</a>
+                    <a class="text-sm font-medium leading-normal hover:text-primary transition-colors dark:text-white"
+                        href="#">Dashboard</a>
+                    <a class="text-sm font-medium leading-normal text-[#637588] dark:text-[#9db4b9] hover:text-primary transition-colors"
+                        href="/docs">API</a>
+                    <a class="text-sm font-medium leading-normal text-[#637588] dark:text-[#9db4b9] hover:text-primary transition-colors"
+                        href="/about.html">Hakkında</a>
+                </nav>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn"
+                class="lg:hidden p-2 text-white hover:text-primary transition-colors relative z-[130]">
+                <span class="material-symbols-outlined text-[24px]" id="menu-icon">menu</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu (Outside Header) -->
+    <div id="mobile-menu"
+        class="lg:hidden hidden fixed top-[73px] left-0 right-0 border-t border-border-dark bg-background-dark/98 backdrop-blur-md z-[120]">
+        <nav class="flex flex-col px-4 py-4 space-y-2">
+            <a class="block px-4 py-3 text-sm font-medium text-[#9db4b9] hover:text-primary hover:bg-surface-dark rounded-lg transition-all"
+                href="/">Ana Sayfa</a>
+            <a class="block px-4 py-3 text-sm font-medium text-white bg-primary/10 rounded-lg" href="#">Dashboard</a>
+            <a class="block px-4 py-3 text-sm font-medium text-[#9db4b9] hover:text-primary hover:bg-surface-dark rounded-lg transition-all"
+                href="/docs">API</a>
+            <a class="block px-4 py-3 text-sm font-medium text-[#9db4b9] hover:text-primary hover:bg-surface-dark rounded-lg transition-all"
+                href="/about.html">Hakkında</a>
+        </nav>
+    </div>
+
+    <main class="flex-grow">
+        <!-- Dashboard Header -->
+        <div
+            class="px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex justify-center bg-gradient-to-br from-background-dark to-[#151c1e]">
+            <div class="max-w-[1280px] w-full">
+                <div class="text-center mb-8">
+                    <div
+                        class="inline-flex items-center gap-2 rounded-full border border-border-dark bg-surface-dark px-4 py-2 mb-4">
+                        <span class="flex size-2 rounded-full bg-green-500 animate-pulse"></span>
+                        <p class="text-xs font-medium text-white" id="system-status">Sistem Aktif</p>
+                    </div>
+                    <h1
+                        class="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-[-0.033em] text-white mb-4">
+                        Deprem Dashboard
+                    </h1>
+                    <p class="text-base sm:text-lg text-[#9db4b9] max-w-2xl mx-auto">
+                        KOERI verilerinden gerçek zamanlı deprem aktivitesi ve detaylı analizler
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="px-4 sm:px-6 lg:px-8 py-8 flex justify-center bg-background-light dark:bg-background-dark">
+            <div class="max-w-[1280px] w-full">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                    <div
+                        class="flex flex-col gap-2 rounded-xl p-4 sm:p-6 border border-border-dark bg-surface-dark hover:border-primary/50 transition-colors group">
+                        <div class="flex justify-between items-start">
+                            <p class="text-[#9db4b9] text-xs sm:text-sm font-medium uppercase tracking-wider">Toplam
+                                Deprem</p>
+                            <span
+                                class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform text-[20px] sm:text-[24px]">analytics</span>
+                        </div>
+                        <p class="text-white text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight mt-2"
+                            id="total-earthquakes">-</p>
+                        <p class="text-[#9db4b9] text-xs sm:text-sm font-medium mt-1">Kayıtlı veri</p>
+                    </div>
+
+                    <div
+                        class="flex flex-col gap-2 rounded-xl p-4 sm:p-6 border border-border-dark bg-surface-dark hover:border-primary/50 transition-colors group">
+                        <div class="flex justify-between items-start">
+                            <p class="text-[#9db4b9] text-xs sm:text-sm font-medium uppercase tracking-wider">Son 24
+                                Saat</p>
+                            <span
+                                class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform text-[20px] sm:text-[24px]">schedule</span>
+                        </div>
+                        <p class="text-white text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight mt-2"
+                            id="tremors-24h">-</p>
+                        <div class="flex items-center gap-1 mt-1">
+                            <span class="material-symbols-outlined text-[#0bda54] text-sm">trending_up</span>
+                            <p class="text-[#0bda54] text-xs sm:text-sm font-medium" id="tremors-trend">Yükleniyor...
+                            </p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="flex flex-col gap-2 rounded-xl p-4 sm:p-6 border border-border-dark bg-surface-dark hover:border-primary/50 transition-colors group">
+                        <div class="flex justify-between items-start">
+                            <p class="text-[#9db4b9] text-xs sm:text-sm font-medium uppercase tracking-wider">En Büyük
+                                Büyüklük</p>
+                            <span
+                                class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform text-[20px] sm:text-[24px]">warning</span>
+                        </div>
+                        <p class="text-white text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight mt-2"
+                            id="max-magnitude">-</p>
+                        <p class="text-[#9db4b9] text-xs sm:text-sm font-medium mt-1" id="max-magnitude-location">
+                            Yükleniyor...</p>
+                    </div>
+
+                    <div
+                        class="flex flex-col gap-2 rounded-xl p-4 sm:p-6 border border-border-dark bg-surface-dark hover:border-primary/50 transition-colors group">
+                        <div class="flex justify-between items-start">
+                            <p class="text-[#9db4b9] text-xs sm:text-sm font-medium uppercase tracking-wider">Sistem
+                                Durumu</p>
+                            <span
+                                class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform text-[20px] sm:text-[24px]">dns</span>
+                        </div>
+                        <p class="text-white text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight mt-2"
+                            id="system-status-text">Çevrimiçi</p>
+                        <div class="flex items-center gap-2 mt-1">
+                            <div class="h-2 w-2 rounded-full bg-[#0bda54]" id="status-indicator"></div>
+                            <p class="text-[#9db4b9] text-xs sm:text-sm font-medium" id="status-message">Tüm sistemler
+                                stabil</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity Table Section -->
+        <div class="px-4 sm:px-6 lg:px-8 py-8 sm:py-10 flex justify-center">
+            <div class="max-w-[1280px] w-full flex flex-col gap-6">
+                <div
+                    class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-border-dark pb-4 gap-4">
+                    <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">Son Deprem Aktivitesi</h2>
+                    <div class="flex gap-3">
+                        <button id="refresh-data"
+                            class="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-hover text-[#111718] rounded-lg font-semibold transition-all">
+                            <span class="material-symbols-outlined text-[18px]">refresh</span>
+                            Yenile
+                        </button>
+                        <a class="flex items-center gap-2 px-4 py-2 border border-border-dark bg-surface-dark hover:bg-[#283639] text-white rounded-lg font-semibold transition-all"
+                            href="/docs">
+                            <span class="material-symbols-outlined text-[18px]">api</span>
+                            API Docs
+                        </a>
+                    </div>
+                </div>
+                <div class="overflow-hidden rounded-xl border border-border-dark bg-surface-dark">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-[#9db4b9] min-w-[600px]">
+                            <thead class="bg-[#283639] text-white">
+                                <tr>
+                                    <th class="px-4 sm:px-6 py-3 sm:py-4 font-bold text-xs sm:text-sm">Konum</th>
+                                    <th class="px-4 sm:px-6 py-3 sm:py-4 font-bold text-xs sm:text-sm">Büyüklük</th>
+                                    <th class="px-4 sm:px-6 py-3 sm:py-4 font-bold text-xs sm:text-sm">Derinlik</th>
+                                    <th class="px-4 sm:px-6 py-3 sm:py-4 font-bold text-xs sm:text-sm">Zaman</th>
+                                    <th class="px-4 sm:px-6 py-3 sm:py-4 font-bold text-xs sm:text-sm text-right">Durum
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-border-dark" id="earthquake-table-body">
+                                <tr>
+                                    <td colspan="5" class="px-4 sm:px-6 py-6 sm:py-8 text-center">
+                                        <div class="flex flex-col items-center gap-3">
+                                            <div
+                                                class="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-2 border-primary border-t-transparent">
+                                            </div>
+                                            <p class="text-[#9db4b9] text-sm">Deprem verileri yükleniyor...</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-border-dark bg-background-dark py-8 sm:py-12 px-4 sm:px-6">
+        <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3 text-white">
+                <span class="material-symbols-outlined text-primary">public</span>
+                <span class="font-bold text-base sm:text-lg">Miraç Birben Deprem Sistemi</span>
+            </div>
+            <div class="flex flex-wrap justify-center gap-4 sm:gap-8 text-sm text-[#9db4b9]">
+                <a class="hover:text-primary transition-colors" href="/privacy.html">Gizlilik Politikası</a>
+                <a class="hover:text-primary transition-colors" href="/terms.html">Kullanım Şartları</a>
+                <a class="hover:text-primary transition-colors" href="/docs">API Dokümantasyonu</a>
+            </div>
+            <div class="text-[#637588] text-sm text-center md:text-right">
+                © 2026 Miraç Birben Systems. Tüm hakları saklıdır.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Vercel Analytics Tracking
+        if (window.va) {
+            window.va('track', 'page_view', { page: 'dashboard' });
+        }
+
+        let isLoading = false;
+        let earthquakeData = [];
+
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+
+            mobileMenuBtn.addEventListener('click', function () {
+                const isOpen = !mobileMenu.classList.contains('hidden');
+
+                if (isOpen) {
+                    mobileMenu.classList.add('hidden');
+                    menuIcon.textContent = 'menu';
+                } else {
+                    mobileMenu.classList.remove('hidden');
+                    menuIcon.textContent = 'close';
+                }
+            });
+
+            // Close mobile menu when clicking on links
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', function () {
+                    mobileMenu.classList.add('hidden');
+                    menuIcon.textContent = 'menu';
+                });
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function (event) {
+                if (!mobileMenuBtn.contains(event.target) && !mobileMenu.contains(event.target)) {
+                    mobileMenu.classList.add('hidden');
+                    menuIcon.textContent = 'menu';
+                }
+            });
+
+            // Load initial data
+            loadEarthquakeData();
+
+            // Auto refresh every 2 minutes
+            setInterval(loadEarthquakeData, 2 * 60 * 1000);
+
+            // Button event listeners
+            document.getElementById('refresh-data').addEventListener('click', function () {
+                if (window.va) window.va('track', 'refresh_clicked');
+                loadEarthquakeData();
+            });
+        });
+
+        // Load earthquake data
+        async function loadEarthquakeData() {
+            if (isLoading) return;
+            isLoading = true;
+
+            try {
+                const [earthquakesResponse, statsResponse] = await Promise.all([
+                    fetch('/api/kandilli-proxy'),
+                    fetch('/api/earthquakes/stats')
+                ]);
+
+                const earthquakesResult = await earthquakesResponse.json();
+                const statsResult = await statsResponse.json();
+
+                // Handle Kandilli API format
+                if (earthquakesResult.status && earthquakesResult.result) {
+                    // Convert Kandilli format to our format
+                    const earthquakeData = earthquakesResult.result.slice(0, 20).map(item => {
+                        const latitude = item.geojson?.coordinates?.[1];
+                        const longitude = item.geojson?.coordinates?.[0];
+                        const dateTime = item.date_time; // Format: "2026-01-14 14:15:55"
+                        
+                        if (!dateTime) return null;
+                        
+                        const [datePart, timePart] = dateTime.split(' ');
+                        const date = datePart.replace(/-/g, '.');
+                        
+                        return {
+                            id: item.earthquake_id,
+                            timestamp: `${datePart}T${timePart}+03:00`,
+                            date: date,
+                            time: timePart,
+                            location: {
+                                latitude: parseFloat(latitude?.toFixed(4) || 0),
+                                longitude: parseFloat(longitude?.toFixed(4) || 0),
+                                depth: parseFloat((item.depth || 0).toFixed(1))
+                            },
+                            magnitude: {
+                                primary: item.mag ? parseFloat(item.mag.toFixed(1)) : null
+                            },
+                            region: item.title,
+                            source: 'KOERI'
+                        };
+                    }).filter(eq => eq && eq.magnitude.primary !== null);
+                    
+                    updateEarthquakeTable(earthquakeData);
+                    updateSystemStatus(true);
+                    
+                    // Calculate stats from earthquake data
+                    calculateAndUpdateStats(earthquakeData, earthquakesResult.result);
+                }
+            } catch (error) {
+                console.error('Veri yükleme hatası:', error);
+                updateSystemStatus(false);
+            } finally {
+                isLoading = false;
+            }
+        }
+
+        function updateStats(stats, total) {
+            // Update total earthquakes
+            document.getElementById('total-earthquakes').textContent = total || stats.total || '-';
+
+            // Update 24h tremors
+            document.getElementById('tremors-24h').textContent = stats.last24Hours || '-';
+            document.getElementById('tremors-trend').textContent = '+12% ortalamaya göre';
+
+            // Update max magnitude
+            if (stats.magnitude && stats.magnitude.max) {
+                document.getElementById('max-magnitude').textContent = stats.magnitude.max.toFixed(1);
+                // Find the region with max magnitude from topRegions
+                const topRegion = stats.topRegions && stats.topRegions[0] ? stats.topRegions[0].region : 'Bilinmiyor';
+                document.getElementById('max-magnitude-location').textContent = topRegion;
+            }
+        }
+
+        function calculateAndUpdateStats(displayData, allData) {
+            // Calculate stats from all data
+            const magnitudes = allData
+                .map(eq => eq.mag)
+                .filter(mag => mag !== null && mag !== undefined && !isNaN(mag));
+
+            const now = new Date();
+            const cutoff24h = now.getTime() - (24 * 60 * 60 * 1000);
+            
+            const last24h = allData.filter(eq => {
+                if (!eq.date_time) return false;
+                const [datePart, timePart] = eq.date_time.split(' ');
+                const eqTime = new Date(`${datePart}T${timePart}+03:00`).getTime();
+                return eqTime >= cutoff24h;
+            }).length;
+
+            const maxMag = magnitudes.length > 0 ? Math.max(...magnitudes) : 0;
+            
+            // Find earthquake with max magnitude
+            const maxEq = allData.find(eq => eq.mag === maxMag);
+            const maxRegion = maxEq ? maxEq.title.split('-')[0].trim() : 'Bilinmiyor';
+
+            // Update UI
+            document.getElementById('total-earthquakes').textContent = allData.length;
+            document.getElementById('tremors-24h').textContent = last24h;
+            document.getElementById('tremors-trend').textContent = `Son 24 saatte ${last24h} deprem`;
+            document.getElementById('max-magnitude').textContent = maxMag.toFixed(1);
+            document.getElementById('max-magnitude-location').textContent = maxRegion;
+        }
+
+        function updateSystemStatus(isOnline) {
+            const statusText = document.getElementById('system-status-text');
+            const statusIndicator = document.getElementById('status-indicator');
+            const statusMessage = document.getElementById('status-message');
+            const systemStatus = document.getElementById('system-status');
+
+            if (isOnline) {
+                statusText.textContent = 'Çevrimiçi';
+                statusIndicator.className = 'h-2 w-2 rounded-full bg-[#0bda54]';
+                statusMessage.textContent = 'Tüm sistemler stabil';
+                systemStatus.textContent = 'Sistem Aktif';
+            } else {
+                statusText.textContent = 'Çevrimdışı';
+                statusIndicator.className = 'h-2 w-2 rounded-full bg-red-500';
+                statusMessage.textContent = 'Bağlantı sorunu';
+                systemStatus.textContent = 'Sistem Hatası';
+            }
+        }
+
+        function updateEarthquakeTable(earthquakes) {
+            const tbody = document.getElementById('earthquake-table-body');
+
+            if (!earthquakes || earthquakes.length === 0) {
+                tbody.innerHTML = `
+                <tr>
+                    <td colspan="5" class="px-4 sm:px-6 py-6 sm:py-8 text-center text-[#9db4b9]">
+                        Henüz deprem verisi bulunmuyor.
+                    </td>
+                </tr>
+            `;
+                return;
+            }
+
+            tbody.innerHTML = earthquakes.map(eq => {
+                const magnitude = eq.magnitude.primary || 0;
+                const magnitudeColor = magnitude >= 4 ? 'bg-red-500/10 text-red-500 ring-red-500/20' :
+                    magnitude >= 3 ? 'bg-yellow-500/10 text-yellow-500 ring-yellow-500/20' :
+                        'bg-primary/10 text-primary ring-primary/20';
+
+                const timeAgo = getTimeAgo(eq.timestamp);
+
+                return `
+                <tr class="hover:bg-white/5 transition-colors">
+                    <td class="px-4 sm:px-6 py-3 sm:py-4 font-medium text-white text-xs sm:text-sm">
+                        <div class="truncate max-w-[150px] sm:max-w-none" title="${eq.region}">${eq.region}</div>
+                    </td>
+                    <td class="px-4 sm:px-6 py-3 sm:py-4">
+                        <span class="inline-flex items-center rounded-md ${magnitudeColor} px-2 py-1 text-xs font-bold ring-1 ring-inset">
+                            ${magnitude.toFixed(1)}
+                        </span>
+                    </td>
+                    <td class="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">${eq.location.depth} km</td>
+                    <td class="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">${timeAgo}</td>
+                    <td class="px-4 sm:px-6 py-3 sm:py-4 text-right">
+                        <span class="inline-flex items-center gap-1 text-green-400 text-xs sm:text-sm">
+                            <span class="material-symbols-outlined text-[14px] sm:text-[16px]">check_circle</span>
+                            <span class="hidden sm:inline">Doğrulandı</span>
+                            <span class="sm:hidden">✓</span>
+                        </span>
+                    </td>
+                </tr>
+            `;
+            }).join('');
+        }
+
+        function getTimeAgo(timestamp) {
+            try {
+                if (!timestamp) return 'Bilinmiyor';
+                
+                const now = new Date();
+                const time = new Date(timestamp);
+                
+                // Check if date is valid
+                if (isNaN(time.getTime())) {
+                    return 'Bilinmiyor';
+                }
+                
+                const diffMs = now - time;
+                const diffMins = Math.floor(diffMs / 60000);
+                const diffHours = Math.floor(diffMins / 60);
+                const diffDays = Math.floor(diffHours / 24);
+
+                if (diffMins < 1) {
+                    return 'Az önce';
+                } else if (diffMins < 60) {
+                    return `${diffMins} dk önce`;
+                } else if (diffHours < 24) {
+                    return `${diffHours} sa önce`;
+                } else if (diffDays < 7) {
+                    return `${diffDays} gün önce`;
+                } else {
+                    return time.toLocaleDateString('tr-TR', { 
+                        day: '2-digit', 
+                        month: '2-digit', 
+                        year: 'numeric' 
+                    });
+                }
+            } catch (error) {
+                console.error('Date parsing error:', error, timestamp);
+                return 'Bilinmiyor';
+            }
+        }
+
+        // Track API calls
+        const originalFetch = window.fetch;
+        window.fetch = function (...args) {
+            const url = args[0];
+            if (url && url.includes('/api/earthquakes')) {
+                if (window.va) {
+                    window.va('track', 'api_call', { endpoint: url });
+                }
+            }
+            return originalFetch.apply(this, args);
+        };
+    </script>
+
+</body>
+
+</html>
