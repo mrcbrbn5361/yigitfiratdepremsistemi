@@ -5,7 +5,7 @@ export class EarthquakeService {
     this.earthquakes = [];
     this.lastUpdate = null;
     // Orhan Aydoğdu API - Kandilli verilerini JSON formatında sunan güvenilir API
-    this.sourceUrl = 'https://gist.githubusercontent.com/mrcbrbn5361/92f37eaca76e75d16d3ac8d62a7a22b9/raw/568856b622740ce2c65476ec7f89971b26e2c052/fake-deprem.json';
+    this.sourceUrl = 'https://raw.githubusercontent.com/gist/mrcbrbn5361/92f37eaca76e75d16d3ac8d62a7a22b9/raw/fake-deprem.json';
     this.maxEarthquakes = 1000;
     this.fetchTimeout = 20000; // 20 saniye
     this.cacheTime = 300000; // 5 dakika
