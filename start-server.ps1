@@ -1,6 +1,6 @@
-# Miraç Birben Deprem API Servisi - Server Management Script
+# Yiğit Fırat Deprem API Servisi - Server Management Script
 
-Write-Host "🌍 Miraç Birben Deprem API Servisi" -ForegroundColor Green
+Write-Host "🌍 Yiğit Fırat Deprem API Servisi" -ForegroundColor Green
 Write-Host "===================================" -ForegroundColor Green
 
 # Check if port 3000 is in use
@@ -22,7 +22,7 @@ if ($portCheck) {
 }
 
 # Start the server
-Write-Host "🚀 Starting Miraç Birben Deprem API Servisi (Production Mode)..." -ForegroundColor Cyan
+Write-Host "🚀 Starting Yiğit Fırat Deprem API Servisi (Production Mode)..." -ForegroundColor Cyan
 Write-Host "🌐 Server: http://127.0.0.1:3000" -ForegroundColor Yellow
 Write-Host "📡 API: http://127.0.0.1:3000/api" -ForegroundColor Yellow
 npm start

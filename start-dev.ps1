@@ -1,6 +1,6 @@
-# Miraç Birben Deprem API Servisi - Development Server Script
+# Yiğit Fırat Deprem API Servisi - Development Server Script
 
-Write-Host "🛠️  Miraç Birben Deprem API Servisi (Development)" -ForegroundColor Cyan
+Write-Host "🛠️  Yiğit Fırat Deprem API Servisi (Development)" -ForegroundColor Cyan
 Write-Host "===============================================" -ForegroundColor Cyan
 
 # Check if port 3000 is in use
@@ -22,7 +22,7 @@ if ($portCheck) {
 }
 
 # Start the development server
-Write-Host "🚀 Starting Miraç Birben Deprem API Servisi (Development Mode)..." -ForegroundColor Cyan
+Write-Host "🚀 Starting Yiğit Fırat Deprem API Servisi (Development Mode)..." -ForegroundColor Cyan
 Write-Host "🌐 Server: http://127.0.0.1:3000 (auto-restart)" -ForegroundColor Yellow
 Write-Host "📡 API: http://127.0.0.1:3000/api (auto-restart)" -ForegroundColor Yellow
 npm run dev

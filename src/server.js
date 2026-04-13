@@ -80,9 +80,9 @@ app.get('/', (req, res) => {
   } else {
     // Otherwise serve JSON API info
     res.json({
-      name: 'Miraç Birben Deprem API Servisi',
+      name: 'Yiğit Fırat Deprem API Servisi',
       version: '1.0.0',
-      description: 'Miraç Birben Deprem API Servisi - KOERI verilerini kullanan gerçek zamanlı deprem takip sistemi',
+      description: 'Yiğit Fırat Deprem API Servisi - KOERI verilerini kullanan gerçek zamanlı deprem takip sistemi',
       endpoints: {
         health: '/health',
         earthquakes: '/api/earthquakes-kandilli',
@@ -605,7 +605,7 @@ const isVercel = process.env.VERCEL === '1';
 if (!isVercel) {
   const server = app.listen(PORT, '127.0.0.1', () => {
     const mode = process.env.NODE_ENV || 'production';
-    console.log(`🌍 Miraç Birben Deprem API Servisi running on http://127.0.0.1:${PORT}`);
+    console.log(`🌍 Yiğit Fırat Deprem API Servisi running on http://127.0.0.1:${PORT}`);
     console.log(`📊 Mode: ${mode}`);
     console.log(`🌐 Frontend: http://127.0.0.1:${PORT}`);
     console.log(`📡 API: http://127.0.0.1:${PORT}/api`);

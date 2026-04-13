@@ -1,4 +1,4 @@
-# Miraç Birben Deprem API Servisi
+# Yiğit Fırat Deprem API Servisi
 
 Türkiye ve yakın çevresindeki gerçek zamanlı deprem verilerini sunan modern web servisi. KOERI (Kandilli Rasathanesi ve Deprem Araştırma Enstitüsü) verilerini kullanır.
 
