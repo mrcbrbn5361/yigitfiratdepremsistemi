@@ -36,10 +36,10 @@
                     colors: {
                         "primary": "#ec4899",
                         "secondary": "#fbbf24",
-                        "background-light": "#ffffff",
-                        "background-dark": "#fff5f7",
-                        "card-dark": "#ffffff",
-                        "border-dark": "#ec4899",
+                        "background-light": "#1f2937",
+                        "background-dark": "#111827",
+                        "card-dark": "#1f2937",
+                        "border-dark": "#374151",
                     },
                     fontFamily: {
                         "display": ["Space Grotesk", "sans-serif"],
@@ -359,7 +359,7 @@
                                 <h4 class="font-bold text-white mb-4">Örnek İstek</h4>
                                 <div class="bg-[#0d1117] p-3 sm:p-4 rounded-lg border border-[#30363d] overflow-x-auto">
                                     <code
-                                        class="text-xs sm:text-sm font-mono text-slate-300 whitespace-pre">curl -X GET "https://miracbirbendepremsistemi.vercel.app/api/kandilli-proxy"</code>
+                                        class="text-xs sm:text-sm font-mono text-slate-300 whitespace-pre">curl -X GET "https://yigitfiratdepremsistemi.vercel.app/api/kandilli-proxy"</code>
                                 </div>
                             </div>
                             <div>
@@ -394,7 +394,7 @@
                             </h4>
                             <div class="bg-[#0d1117] p-3 sm:p-4 rounded-lg border border-[#30363d] overflow-x-auto">
                                 <pre
-                                    class="text-xs sm:text-sm font-mono text-slate-300"><code><span class="text-purple-400">fetch</span>(<span class="text-green-400">'https://miracbirbendepremsistemi.vercel.app/api/earthquakes-kandilli?limit=10'</span>)
+                                    class="text-xs sm:text-sm font-mono text-slate-300"><code><span class="text-purple-400">fetch</span>(<span class="text-green-400">'https://yigitfiratdepremsistemi.vercel.app/api/earthquakes-kandilli?limit=10'</span>)
   .<span class="text-blue-400">then</span>(response => response.<span class="text-blue-400">json</span>())
   .<span class="text-blue-400">then</span>(data => {
     <span class="text-purple-400">console</span>.<span class="text-blue-400">log</span>(<span class="text-green-400">'Depremler:'</span>, data.data);
@@ -411,7 +411,7 @@
                             </h4>
                             <div class="bg-[#0d1117] p-3 sm:p-4 rounded-lg border border-[#30363d] overflow-x-auto">
                                 <pre class="text-xs sm:text-sm font-mono text-slate-300"><code>$.<span class="text-blue-400">ajax</span>({
-  <span class="text-primary">url</span>: <span class="text-green-400">'https://miracbirbendepremsistemi.vercel.app/api/earthquakes-kandilli'</span>,
+  <span class="text-primary">url</span>: <span class="text-green-400">'https://yigitfiratdepremsistemi.vercel.app/api/earthquakes-kandilli'</span>,
   <span class="text-primary">method</span>: <span class="text-green-400">'GET'</span>,
   <span class="text-primary">data</span>: { <span class="text-primary">limit</span>: <span class="text-blue-400">10</span> },
   <span class="text-primary">success</span>: <span class="text-purple-400">function</span>(data) {
@@ -431,7 +431,7 @@
                                 <pre class="text-xs sm:text-sm font-mono text-slate-300"><code><span class="text-purple-400">import</span> requests
 
 response = requests.<span class="text-blue-400">get</span>(
-    <span class="text-green-400">'https://miracbirbendepremsistemi.vercel.app/api/earthquakes-kandilli'</span>,
+    <span class="text-green-400">'https://yigitfiratdepremsistemi.vercel.app/api/earthquakes-kandilli'</span>,
     params={<span class="text-green-400">'limit'</span>: <span class="text-blue-400">10</span>}
 )
 data = response.<span class="text-blue-400">json</span>()
@@ -447,7 +447,7 @@ data = response.<span class="text-blue-400">json</span>()
                             </h4>
                             <div class="bg-[#0d1117] p-3 sm:p-4 rounded-lg border border-[#30363d] overflow-x-auto">
                                 <pre class="text-xs sm:text-sm font-mono text-slate-300"><code>curl -X GET \
-  <span class="text-green-400">"https://miracbirbendepremsistemi.vercel.app/api/earthquakes-kandilli?limit=10"</span> \
+  <span class="text-green-400">"https://yigitfiratdepremsistemi.vercel.app/api/earthquakes-kandilli?limit=10"</span> \
   -H <span class="text-green-400">"Accept: application/json"</span></code></pre>
                             </div>
                         </div>
@@ -489,7 +489,7 @@ data = response.<span class="text-blue-400">json</span>()
                                 <h4 class="font-bold text-white mb-4">Örnek İstek</h4>
                                 <div class="bg-[#0d1117] p-3 sm:p-4 rounded-lg border border-[#30363d] overflow-x-auto">
                                     <code
-                                        class="text-xs sm:text-sm font-mono text-slate-300 whitespace-pre">curl -X GET "https://miracbirbendepremsistemi.vercel.app/api/test-kandilli"</code>
+                                        class="text-xs sm:text-sm font-mono text-slate-300 whitespace-pre">curl -X GET "https://yigitfiratdepremsistemi.vercel.app/api/test-kandilli"</code>
                                 </div>
                             </div>
                             <div>
@@ -584,7 +584,7 @@ data = response.<span class="text-blue-400">json</span>()
                 <footer class="mt-auto py-8 sm:py-12 border-t border-slate-200 dark:border-border-dark">
                     <div
                         class="flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6 text-xs sm:text-sm text-slate-500 dark:text-[#9db4b9]">
-                        <p>© 2026 Miraç Birben Deprem Sistemi. Tüm hakları saklıdır.</p>
+                        <p>© 2026 Yiğit Fırat Deprem Sistemi. Tüm hakları saklıdır.</p>
                         <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
                             <a class="hover:text-primary transition-colors" href="/terms.html">Şartlar</a>
                             <a class="hover:text-primary transition-colors" href="/privacy.html">Gizlilik</a>
